@@ -26,6 +26,7 @@ def splitFlux_LF(ixy, U, aux):
     Hminus = 0.5 * (F - theta * U)
     return Hplus, Hminus
 
+@jit
 def splitFlux_LF_w(ixy, U, aux):
     rho,u,v,Y,p,a = aux_func.U_to_prim(U,aux)
     rhoE = U[3:4,:,:]
@@ -169,7 +170,7 @@ def WENO_minus_y(f):
 
 
 
-
+@jit
 def WENO_plus_x_w(f):
 
     #f = jnp.concatenate([f, Y], axis=0)
@@ -320,6 +321,7 @@ def weno5(U,aux,dx,dy):
 
     return -netflux
 
+@jit
 def weno5_w(U,aux,dx,dy):
     Fplus, Fminus = splitFlux_LF_w(1, U, aux)
     Gplus, Gminus = splitFlux_LF_w(2, U, aux)
