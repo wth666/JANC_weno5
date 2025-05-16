@@ -170,9 +170,9 @@ def WENO_minus_y(f):
 
 
 
-def WENO_plus_x_w(f,Y):
+def WENO_plus_x_w(f):
 
-    f = jnp.concatenate([f, Y], axis=0)
+    #f = jnp.concatenate([f, Y], axis=0)
     fj = f[:,2:-3,3:-3]
     fjp1 = f[:,3:-2,3:-3]
     fjp2 = f[:,4:-1,3:-3]
@@ -205,9 +205,9 @@ def WENO_plus_x_w(f,Y):
     return dfj
 
 @jit
-def WENO_plus_y_w(f,Y):
+def WENO_plus_y_w(f):
 
-    f = jnp.concatenate([f, Y], axis=0)
+    #f = jnp.concatenate([f, Y], axis=0)
     fj = f[:,3:-3,2:-3]
     fjp1 = f[:,3:-3,3:-2]
     fjp2 = f[:,3:-3,4:-1]
@@ -240,9 +240,9 @@ def WENO_plus_y_w(f,Y):
     return dfj
 
 @jit
-def WENO_minus_x_w(f,Y):
+def WENO_minus_x_w(f):
 
-    f = jnp.concatenate([f, Y], axis=0)
+    #f = jnp.concatenate([f, Y], axis=0)
     fj = f[:,3:-2,3:-3]
     fjp1 = f[:,4:-1,3:-3]
     fjp2 = f[:,5:,3:-3]
@@ -275,9 +275,9 @@ def WENO_minus_x_w(f,Y):
     return dfj
 
 @jit
-def WENO_minus_y_w(f,Y):
+def WENO_minus_y_w(f):
 
-    f = jnp.concatenate([f, Y], axis=0)
+    #f = jnp.concatenate([f, Y], axis=0)
     fj = f[:,3:-3,3:-2]
     fjp1 = f[:,3:-3,4:-1]
     fjp2 = f[:,3:-3,5:]
@@ -334,11 +334,11 @@ def weno5_w(U,aux,dx,dy):
 
     Y = U[4:,:,:]/U[0:1,:,:]
 
-    dFp = WENO_plus_x_w(Fplus,Y)
-    dFm = WENO_minus_x_w(Fminus,Y)
+    dFp = WENO_plus_x_w(jnp.concatenate([Fplus,Y], axis=0))
+    dFm = WENO_minus_x_w(jnp.concatenate([Fminus,Y], axis=0))
 
-    dGp = WENO_plus_y_w(Gplus,Y)
-    dGm = WENO_minus_y_w(Gminus,Y)
+    dGp = WENO_plus_y_w(jnp.concatenate([Gplus,Y], axis=0))
+    dGm = WENO_minus_y_w(jnp.concatenate([Gminus,Y], axis=0))
 
     dF = dFp + dFm
     dG = dGp + dGm
