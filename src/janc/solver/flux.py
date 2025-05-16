@@ -196,7 +196,9 @@ def WENO_plus_x_w(f,Y):
     fj_halfp3 = 1 / 3 * fj + 5 / 6 * fjp1 - 1 / 6 * fjp2
 
     fj_halfp = w1 * fj_halfp1 + w2 * fj_halfp2 + w3 * fj_halfp3
-    fj_halfp = jnp.concatenate([fj_halfp[:4,:,:], fj_halfp[4:,:,:] * jnp.tile(fj_halfp[0:1,:,:],(8,1,1))], axis=0)
+    fj0 = fj_halfp[0]
+    fj_tail_scaled = vmap(lambda x: x * fj0)(fj_halfp[4:])
+    fj_halfp = jnp.concatenate([fj_halfp[:4], fj_tail_scaled], axis=0)
     dfj = fj_halfp[:,1:,:] - fj_halfp[:,0:-1,:]
     
     return dfj
@@ -229,7 +231,9 @@ def WENO_plus_y_w(f,Y):
     fj_halfp3 = 1 / 3 * fj + 5 / 6 * fjp1 - 1 / 6 * fjp2
 
     fj_halfp = w1 * fj_halfp1 + w2 * fj_halfp2 + w3 * fj_halfp3
-    fj_halfp = jnp.concatenate([fj_halfp[:4,:,:], fj_halfp[4:,:,:] * jnp.tile(fj_halfp[0:1,:,:],(8,1,1))], axis=0)
+    fj0 = fj_halfp[0]
+    fj_tail_scaled = vmap(lambda x: x * fj0)(fj_halfp[4:])
+    fj_halfp = jnp.concatenate([fj_halfp[:4], fj_tail_scaled], axis=0)
     dfj = fj_halfp[:,:,1:] - fj_halfp[:,:,0:-1]
 
     return dfj
@@ -262,7 +266,9 @@ def WENO_minus_x_w(f,Y):
     fj_halfm3 = 1 / 3 * fj + 5 / 6 * fjm1 - 1 / 6 * fjm2
 
     fj_halfm = w1 * fj_halfm1 + w2 * fj_halfm2 + w3 * fj_halfm3
-    fj_halfm = jnp.concatenate([fj_halfm[:4,:,:], fj_halfm[4:,:,:] * jnp.tile(fj_halfm[0:1,:,:],(8,1,1))], axis=0)
+    fj0 = fj_halfm[0]
+    fj_tail_scaled = vmap(lambda x: x * fj0)(fj_halfm[4:])
+    fj_halfm = jnp.concatenate([fj_halfm[:4], fj_tail_scaled], axis=0)
     dfj = (fj_halfm[:,1:,:] - fj_halfm[:,0:-1,:])
 
     return dfj
@@ -295,7 +301,9 @@ def WENO_minus_y_w(f,Y):
     fj_halfm3 = 1 / 3 * fj + 5 / 6 * fjm1 - 1 / 6 * fjm2
 
     fj_halfm = w1 * fj_halfm1 + w2 * fj_halfm2 + w3 * fj_halfm3
-    fj_halfm = jnp.concatenate([fj_halfm[:4,:,:], fj_halfm[4:,:,:] * jnp.tile(fj_halfm[0:1,:,:],(8,1,1))], axis=0)
+    fj0 = fj_halfm[0]
+    fj_tail_scaled = vmap(lambda x: x * fj0)(fj_halfm[4:])
+    fj_halfm = jnp.concatenate([fj_halfm[:4], fj_tail_scaled], axis=0)
     dfj = (fj_halfm[:,:,1:] - fj_halfm[:,:,0:-1])
 
     return dfj
