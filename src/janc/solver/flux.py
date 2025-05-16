@@ -1,6 +1,7 @@
 import jax.numpy as jnp
 from jax import jit
 from ..solver import aux_func
+from jax import vmap
 
 p = 2
 eps = 1e-6
