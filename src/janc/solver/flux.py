@@ -335,8 +335,8 @@ def weno5_w(U,aux,dx,dy):
     dFp = WENO_plus_x_w(Fplus_Y)
     dFm = WENO_minus_x_w(Fminus_Y)
 
-    dGp = WENO_plus_y_w(jnp.concatenate(Gplus_Y)
-    dGm = WENO_minus_y_w(jnp.concatenate(Gminus_Y)
+    dGp = WENO_plus_y_w(Gplus_Y)
+    dGm = WENO_minus_y_w(Gminus_Y)
 
     dF = dFp + dFm
     dG = dGp + dGm
